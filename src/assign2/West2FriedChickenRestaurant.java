@@ -50,25 +50,35 @@ public class West2FriedChickenRestaurant implements FriedChickenRestaurant {
     public void sale_package(SetMeal s) {
         Drinks d = s.getDrinks();
         balance += s.getPrice();
-        if (d instanceof Beer) {
-            use((Beer) d);
-        } else if (d instanceof Juice) {
-            use((Juice) d);
+        try {
+            if (d instanceof Beer) {
+                use((Beer) d);
+            } else if (d instanceof Juice) {
+                use((Juice) d);
+            }
+        } catch (IngredientSortOutException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void bulk_purchase() {
+        double sum = 0;
         for (SetMeal i : set_meal_list) {
             Drinks a = i.getDrinks();
-            if (balance < a.cost)
-                throw new OverdraftBalanceException(a.cost - balance);
-            balance -= a.cost;
+            sum += a.cost;
             if (a instanceof Beer) {
                 beer_list.add((Beer) a);
             } else if (a instanceof Juice) {
                 juice_list.add((Juice) a);
             }
+        }
+        try {
+            if (balance < sum)
+                throw new OverdraftBalanceException(sum - balance);
+            balance -= sum;
+        } catch (OverdraftBalanceException e) {
+            e.printStackTrace();
         }
     }
 

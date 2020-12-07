@@ -5,6 +5,7 @@ public class Multithreading {
     public static void main(String[] args) throws InterruptedException {
         ArrayList<Thread> task = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
+        System.out.println("输入数字x：");
         int x = scanner.nextInt();
         long start = System.currentTimeMillis();
         int group = 80;//线程数
